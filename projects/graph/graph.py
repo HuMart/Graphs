@@ -94,7 +94,7 @@ class Graph:
                     return "BFS: "+ str(path)
 
                 visited.add(current)
-                
+
                 for adjacents in self.vertices[current]:
                     new_path = list(path)
                     new_path.append(adjacents)
@@ -107,30 +107,22 @@ class Graph:
         starting_vertex to destination_vertex in
         depth-first order.
         """
-        # empty set to store visited
         visited = set()
-        # create empty stack
         ss = Stack()
-        # path starting_vortex to stack
         ss.push([starting_vertex])
-        # while stack is not empty:
+
         while ss.size() > 0:
-            # pop out first path
             path = ss.pop()
             current = path[-1]
-            # if not visited. add it to visited:
+
             if current not in visited:
-                # if vertex = target:
                 if current == destination_vertex:
-                # return path
                     return "DFS: "+ str(path)
-            # mark it as visited
+           
             visited.add(current)
-            # add a path to all adjacents to the stack:
+
             for adjacents in self.vertices[current]:
-                # copy the path
                 copy_path = list(path)
-                # add adjacent to back of the copy 
                 copy_path.append(adjacents)
                 ss.push(copy_path)
         return "DFS: Value not found"
