@@ -82,35 +82,24 @@ class Graph:
         starting_vertex to destination_vertex in
         breath-first order.
         """
-        #  Create an empty set to store visited
-        visited = set()
-        # Create an empty queue
-        qq = Queue()
-        # add a path to the starting_vortex
+        visited = set()        
+        qq = Queue()        
         qq.enqueue([starting_vertex])
-        # return a list with the shortest path
-        # while queue not empty:
+        
         while qq.size() > 0:
-            # dequeue first path in the queue
             path = qq.dequeue()
-            # get the vertex from the end of the path
             current = path[-1]
-            # if the vortex hasn't been visited:
             if current not in visited:
-                # if vertex is target:
                 if current == destination_vertex:
-                    #  return the path
                     return "BFS: "+ str(path)
-                # mark it as visited
+
                 visited.add(current)
-                # Add a path to the adjacent nodes to the back of the queue
+                
                 for adjacents in self.vertices[current]:
-                #    copy the path
                     new_path = list(path)
-                #  append adjacent to the back of the copy
                     new_path.append(adjacents)
-                #  enqueue copy
                     qq.enqueue(new_path)
+
         return "BFS: Value not found"
     def dfs(self, starting_vertex, destination_vertex):
         """
