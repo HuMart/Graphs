@@ -1,6 +1,32 @@
 import random
 from itertools import combinations
 
+class Queue():
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
+
+class Stack():
+    def __init__(self):
+        self.stack = []
+    def push(self, value):
+        self.stack.append(value)
+    def pop(self):
+        if self.size() > 0:
+            return self.stack.pop()
+        else:
+            return None
+    def size(self):
+        return len(self.stack)
+
 class User:
     def __init__(self, name):
         self.name = name
@@ -53,16 +79,27 @@ class SocialGraph:
         # Create friendships
         friends_comb = []
         combo = combinations(range(1, numUsers + 1), 2)
-
         for relationship in list(combo):
             friends_comb.append(relationship)
+
         random.shuffle(friends_comb)
         total_friends = int((avgFriendships * numUsers)/2)
         new_friend = friends_comb[:total_friends]
+        
         for friendship in new_friend:
             first_friend = friendship[0]
             second_friend = friendship[1]
             self.addFriendship(first_friend, second_friend)
+        # for userID in self.users:
+        #     for friendID in range(userID +1, self.lastID):
+        #         friends_comb.append((userID, friendID))
+        #     random.shuffle(friends_comb)
+        
+        # for i in range(0, (numUsers * avgFriendships // 2)):
+        #     friendship = friends_comb[i]
+        #     first_friend = friendship[0]
+        #     second_friend = friendship[1]
+        #     self.addFriendship(first_friend, second_friend)
 
     def getAllSocialPaths(self, userID):
         """
@@ -75,6 +112,20 @@ class SocialGraph:
         """
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
+        qq = Queue()
+        qq.enqueue([userID])
+
+        while qq.size() > 0:
+            path  = qq.dequeue()
+            node = path[-1]
+
+            if node not in visited:
+                visited[node] = path
+                for next_node in self.friendships[node]:
+                    new_path = path.copy()
+                    new_path.append(next_node)
+                    qq.enqueue(new_path)
+
         return visited
 
 
@@ -83,4 +134,11 @@ if __name__ == '__main__':
     sg.populateGraph(10, 2)
     print(sg.friendships)
     connections = sg.getAllSocialPaths(1)
+    print("Connections for 1:")
+    print(connections)
+    connections = sg.getAllSocialPaths(2)
+    print("Connections for 2:")
+    print(connections)
+    connections = sg.getAllSocialPaths(10)
+    print("Connections for 10:")
     print(connections)
